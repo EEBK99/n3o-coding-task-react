@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { LeftCircleFilled } from '@ant-design/icons';
-
-import { Space, Tag } from 'antd';
+import { WarningFilled } from '@ant-design/icons';
+import { Space, Tag, notification } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+
 import CustomTable from '../shared/custom-table';
 import CustomSelect from '../shared/custom-select';
 import CustomButton from '../shared/custom-button';
@@ -11,6 +12,9 @@ import CustomButton from '../shared/custom-button';
 interface Types {
   handleGoBack?: () => void;
 }
+
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
 interface DataType {
   id: string;
   name: string | null;
@@ -67,10 +71,13 @@ const columns: ColumnsType<DataType> = [
 ];
 
 const DonorTable: FC<Types> = ({ handleGoBack }) => {
+  const [api, contextHolder] = notification.useNotification();
+
   const [statusOptions, setStatusOptions] = useState([{}]);
   const [data, setData] = useState<DataType[]>([]);
   const [statusValue, setStatusValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [triggerTable, setTriggerTable] = useState(false);
 
   const handleFilterChange = (value: string) => {
     setStatusValue(value);
@@ -105,13 +112,36 @@ const DonorTable: FC<Types> = ({ handleGoBack }) => {
         }
       })
       .catch((err) => {
-        // handle error response
-        console.log('err all donations', err);
+        openNotificationWithIcon('error', 'Error', err?.message);
       });
-  }, [statusValue]);
+  }, [statusValue, triggerTable]);
+
+  const handleResetClick = () => {
+    axios
+      .post('https://n3o-coding-task-react.azurewebsites.net/api/v1/donationItems/reset')
+      .then((res) => {
+        openNotificationWithIcon('success', 'Success', 'Data reset successfully');
+        setTriggerTable(!triggerTable);
+      })
+      .catch((err) => {
+        openNotificationWithIcon('error', 'Error', err?.message);
+      });
+  };
+
+  const openNotificationWithIcon = (
+    type: NotificationType,
+    message: string,
+    description: string
+  ) => {
+    api[type]({
+      message: message,
+      description: description
+    });
+  };
 
   return (
     <>
+      {contextHolder}
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <div
           style={{
@@ -122,19 +152,24 @@ const DonorTable: FC<Types> = ({ handleGoBack }) => {
           }}>
           <div
             style={{
-              width: '250px',
+              width: '350px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
             }}>
             <CustomButton shape="default" icon={<LeftCircleFilled />} onClick={handleGoBack} />
             <CustomSelect
-              placeholder="Select status"
-              label={'Filter Status'}
+              placeholder="Filter Status"
               name={'status'}
               options={statusOptions}
               onChange={handleFilterChange}
               width="200px"
+            />
+            <CustomButton
+              shape="default"
+              icon={<WarningFilled />}
+              onClick={handleResetClick}
+              text="Reset"
             />
           </div>
         </div>

@@ -2,9 +2,9 @@ import { Form, Select } from 'antd';
 import { FC } from 'react';
 
 interface Types {
-  placeholder: string;
-  label: string;
-  name: string;
+  placeholder?: string;
+  label?: string;
+  name?: string;
   rules?: any[];
   options?: any[];
   isForm?: boolean;
