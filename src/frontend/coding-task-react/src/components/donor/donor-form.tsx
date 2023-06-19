@@ -1,14 +1,23 @@
 import { FC, useEffect, useState } from 'react';
-import { Form } from 'antd';
+import { Form, Space, notification } from 'antd';
 import * as yup from 'yup';
+import { LeftCircleFilled } from '@ant-design/icons';
 
 import CustomInput from '../shared/custom-input';
 import CustomButton from '../shared/custom-button';
 import CustomSelect from '../shared/custom-select';
 import axios from 'axios';
 
-const DonorForm: FC = () => {
+interface Types {
+  handleGoBack?: () => void;
+}
+
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
+const DonorForm: FC<Types> = ({ handleGoBack }) => {
   const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
+
   const [locationOptions, setLocationOptions] = useState([{}]);
   const [themeOptions, setThemeOptions] = useState([{}]);
 
@@ -32,7 +41,6 @@ const DonorForm: FC = () => {
   };
 
   const onFinish = (formData: any) => {
-    console.log('Success:', formData);
     const data = {
       name: formData?.name,
       location: formData?.location,
@@ -42,73 +50,95 @@ const DonorForm: FC = () => {
         amount: formData?.price
       }
     };
-    console.log('formData formatted:', data);
 
     axios
       .post('https://n3o-coding-task-react.azurewebsites.net/api/v1/donationItems', data)
       .then((res) => {
-        console.log('res create donation : ', res);
+        form.resetFields();
+        openNotificationWithIcon(
+          'success',
+          'Success',
+          'The new donation item created successfully'
+        );
       })
       .catch((err) => {
-        console.log('err create donation : ', err);
+        openNotificationWithIcon('error', 'Error', err?.message);
       });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+  const openNotificationWithIcon = (
+    type: NotificationType,
+    message: string,
+    description: string
+  ) => {
+    api[type]({
+      message: message,
+      description: description
+    });
   };
 
   useEffect(() => {
     axios
       .get('https://n3o-coding-task-react.azurewebsites.net/api/v1/donationItems/locations')
       .then((res) => {
-        console.log('res location options: ', res);
         setLocationOptions(res?.data);
       })
       .catch((err) => {
-        console.log('err location options', err);
+        openNotificationWithIcon('error', 'Error', err?.message);
       });
 
     axios
       .get('https://n3o-coding-task-react.azurewebsites.net/api/v1/donationItems/themes')
       .then((res) => {
-        console.log('res themes options: ', res);
         setThemeOptions(res?.data);
       })
       .catch((err) => {
-        console.log('err themes options', err);
+        openNotificationWithIcon('error', 'Error', err?.message);
       });
   }, []);
 
   return (
     <>
-      <Form
-        form={form}
-        name="basic"
-        labelCol={{ span: 2 }}
-        style={{ width: '100%' }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off">
-        <CustomInput placeholder="Enter name" label={'Name'} name={'name'} rules={[yupSync]} />
-        <CustomSelect
-          placeholder="Enter location"
-          label={'Location'}
-          name={'location'}
-          rules={[yupSync]}
-          options={locationOptions}
-        />
-        <CustomSelect
-          placeholder="Enter theme"
-          label={'Theme'}
-          name={'theme'}
-          rules={[yupSync]}
-          options={themeOptions}
-        />
-        <CustomInput placeholder="Enter price" label={'Price'} name={'price'} rules={[yupSync]} />
-        <CustomButton text={'Create'} isFormButton isBlock />
-      </Form>
+      {contextHolder}
+      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'end'
+          }}>
+          <CustomButton shape="default" icon={<LeftCircleFilled />} onClick={handleGoBack} />
+        </div>
+        <Form
+          form={form}
+          name="basic"
+          labelCol={{ span: 2 }}
+          style={{ width: '100%' }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          autoComplete="off">
+          <CustomInput placeholder="Enter name" label={'Name'} name={'name'} rules={[yupSync]} />
+          <CustomSelect
+            placeholder="Enter location"
+            label={'Location'}
+            name={'location'}
+            rules={[yupSync]}
+            options={locationOptions}
+            isForm
+          />
+          <CustomSelect
+            placeholder="Enter theme"
+            label={'Theme'}
+            name={'theme'}
+            rules={[yupSync]}
+            options={themeOptions}
+            isForm
+          />
+          <CustomInput placeholder="Enter price" label={'Price'} name={'price'} rules={[yupSync]} />
+          <CustomButton text={'Create'} isForm isBlock />
+        </Form>
+      </Space>
     </>
   );
 };
