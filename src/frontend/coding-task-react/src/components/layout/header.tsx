@@ -1,6 +1,7 @@
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-function Header() {
+const Header: FC = () => {
   return (
     <header className="header">
       <div className="logo">
@@ -8,6 +9,6 @@ function Header() {
       </div>
     </header>
   );
-}
+};
 
 export default Header;

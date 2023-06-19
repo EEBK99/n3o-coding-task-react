@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 
-function Footer() {
+const Footer: FC = () => {
   return <footer>Copyrights &copy; All rights reserved.</footer>;
-}
+};
 
 export default Footer;
