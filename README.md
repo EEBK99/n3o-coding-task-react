@@ -2,7 +2,7 @@
 
 ### Completed Task Overview
 
-User can,
+User can:
 
 - View a list of the current donation items.
 - Filter the donation items by their Status.
