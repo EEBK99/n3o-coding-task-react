@@ -5,7 +5,9 @@ const Header: FC = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">EEBK99</Link>
+        <Link to="/">
+          <h2>EEBK99</h2>
+        </Link>
       </div>
     </header>
   );
