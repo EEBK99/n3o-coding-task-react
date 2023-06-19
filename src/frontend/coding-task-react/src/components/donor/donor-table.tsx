@@ -69,9 +69,11 @@ const columns: ColumnsType<DataType> = [
 const DonorTable: FC<Types> = ({ handleGoBack }) => {
   const [statusOptions, setStatusOptions] = useState([{}]);
   const [data, setData] = useState<DataType[]>([]);
+  const [statusValue, setStatusValue] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleFilterChange = (value: string) => {
-    console.log('status', value);
+    setStatusValue(value);
   };
 
   useEffect(() => {
@@ -87,16 +89,26 @@ const DonorTable: FC<Types> = ({ handleGoBack }) => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get('https://n3o-coding-task-react.azurewebsites.net/api/v1/donationItems/all')
       .then((res) => {
-        setData(res?.data);
+        if (statusValue) {
+          const filteredData = res?.data?.filter(
+            (item: { status: { id: string } }) => item?.status?.id === statusValue
+          );
+          setData(filteredData);
+          setLoading(false);
+        } else {
+          setData(res?.data);
+          setLoading(false);
+        }
       })
       .catch((err) => {
         // handle error response
         console.log('err all donations', err);
       });
-  }, []);
+  }, [statusValue]);
 
   return (
     <>
@@ -127,7 +139,7 @@ const DonorTable: FC<Types> = ({ handleGoBack }) => {
           </div>
         </div>
 
-        <CustomTable columns={columns} data={data} />
+        <CustomTable columns={columns} data={data} loading={loading} />
       </Space>
     </>
   );
