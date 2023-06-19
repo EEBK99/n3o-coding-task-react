@@ -1,58 +1,24 @@
-## Coding Task (React)
+# Coding Task (React) - EEBK99
 
-This coding task is for a frontend developer and assumes that you are familiar with React.
+### Completed Task Overview
 
-Your task is to build a simple UI which consumes the provided API and demonstrates the below functionality.
+User can,
 
-There is no absolute time limit and we won't judge you on how long it took you to complete, however we would suggest you spend no more than 2 hours on this task. We wouldn't ask you to do this task if we didn't already think you looked like a good candidate, so we really appreciate the time you put into this.
-
-### General Instructions
-
-- Use version control
-- Please use **React** (v16.8+, i.e. hooks) for this project
-- Use Ant Design.
-- You are not required to use a state management library.
-- Use any toolchain you wish, but make sure you provide a **README** so we know how to run your app.
-
-### The Task
-
-Please build a simple UI which allows the user to view donation items and create new donation items.
-
-A donation item is an item which can be donated towards by a donor, similar to a product in an e-commerce setting.
-
-Using React, please build a simple UI (single page) which integrates with the API provided. The user should be able to:
-
-- View a list of the current donation items. Please show:
-  - Donation item Name
-  - Reference (e.g. DI1001)
-  - Price
-  - Status
-  - Location
-  - Theme
-- Filter the donation items by their Status
+- View a list of the current donation items.
+- Filter the donation items by their Status.
 - Add a new donation item
+- Reset current in-memory database
 
-To create a donation item, pass the following properties:
+### Project Setup Guidance
 
-| Property | Description                                                   | Validation                                                                                   | Required on Create Request |
-| -------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------- |
-| Name     | A descriptive name of the donation item                       | - Length between 1-200 <br> - Must be unique                                                 | Yes                        |
-| Location | The id of the location where this donation will be spent      | - Must be valid location                                                                     | Yes                        |
-| Theme    | The id of the theme towards which this donation will be spent | - Must be valid theme                                                                        | Yes                        |
-| Price    | The suggested amount in GBP (£) for this donation item        | - Must be a number/decimal if provided <br> - Currency must be GBP <br> - Amount must be > 0 | No                         |
+- Install Node.js
+- Install Git
 
-### The API
+### Project Start Guidance
 
-All API endpoints are accessible and documented at:
+- Run **npm install** to install all dependencies.
+- Run **npm run dev** to start server.
 
-https://n3o-coding-task-react.azurewebsites.net/swagger/index.html
+## Please take a look at this repository, which includes Ant Design as well
 
-You can use the /reset endpoint to reset the in-memory database.
-
-### Submitting
-
-Please share your solution by forking this repo in your own GitHub account and add n3o-github as a collaborator so we can take a look.
-
-We look forward to seeing your work!
-
-If you have any questions please feel free to get in touch.
+[https://github.com/EEBK99/codistan-task-eebk99]
