@@ -5,15 +5,13 @@ interface Types {
   placeholder: string;
   label: string;
   name: string;
+  rules?: any;
 }
 
-const CustomInput: FC<Types> = ({ placeholder, label, name }) => {
+const CustomInput: FC<Types> = ({ placeholder, label, name, rules }) => {
   return (
     <>
-      <Form.Item
-        label={label}
-        name={name}
-        rules={[{ required: true, message: 'Please input your username!' }]}>
+      <Form.Item label={label} name={name} rules={rules}>
         <Input placeholder={placeholder} />
       </Form.Item>
     </>

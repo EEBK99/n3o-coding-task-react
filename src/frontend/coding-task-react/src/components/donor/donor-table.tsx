@@ -5,23 +5,14 @@ import { Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import CustomTable from '../shared/custom-table';
 
-interface ReferenceType {
-  type: {
-    id: string;
-    prefix: string;
-  };
-  number: number;
-  text: string;
-}
-
 interface DataType {
   id: string;
   name: string | null;
-  reference: ReferenceType | null;
-  price: number | null;
+  reference: { [key: string]: string } | null;
+  price: { [key: string]: string } | null;
   status: { [key: string]: string };
-  location: string | null;
-  theme: string | null;
+  location: { [key: string]: string } | null;
+  theme: { [key: string]: string } | null;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -40,7 +31,7 @@ const columns: ColumnsType<DataType> = [
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    render: (_, { price }) => <>{price ?? 'N/A'}</>
+    render: (_, { price }) => <>{price?.text ?? 'N/A'}</>
   },
   {
     title: 'Status',
@@ -59,13 +50,13 @@ const columns: ColumnsType<DataType> = [
     title: 'Location',
     key: 'location',
     dataIndex: 'location',
-    render: (_, { location }) => <>{location ?? 'N/A'}</>
+    render: (_, { location }) => <>{location?.name ?? 'N/A'}</>
   },
   {
     title: 'Theme',
     key: 'theme',
     dataIndex: 'theme',
-    render: (_, { theme }) => <>{theme ?? 'N/A'}</>
+    render: (_, { theme }) => <>{theme?.name ?? 'N/A'}</>
   }
 ];
 
