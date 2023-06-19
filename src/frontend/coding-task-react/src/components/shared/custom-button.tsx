@@ -8,13 +8,22 @@ interface PropTypes {
   onClick?: (event: any) => void;
   shape?: 'circle' | 'default' | 'round' | undefined;
   icon?: JSX.Element;
+  layout?: any;
 }
 
-const CustomButton: FC<PropTypes> = ({ text, isBlock, isForm = false, onClick, shape, icon }) => {
+const CustomButton: FC<PropTypes> = ({
+  text,
+  isBlock,
+  isForm = false,
+  onClick,
+  shape,
+  icon,
+  layout
+}) => {
   return (
     <>
       {isForm ? (
-        <Form.Item>
+        <Form.Item {...layout}>
           <Button type="primary" block={isBlock} style={{ background: '#000' }} htmlType="submit">
             {text}
           </Button>

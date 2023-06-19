@@ -97,23 +97,30 @@ const DonorForm: FC<Types> = ({ handleGoBack }) => {
       });
   }, []);
 
+  const layout = {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 12 }
+  };
+
+  const tailLayout = {
+    wrapperCol: { offset: 6, span: 12 }
+  };
+
   return (
     <>
       {contextHolder}
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <div
           style={{
-            width: '100%',
             display: 'flex',
-            justifyContent: 'end',
-            alignItems: 'end'
+            justifyContent: 'center'
           }}>
           <CustomButton shape="default" icon={<LeftCircleFilled />} onClick={handleGoBack} />
         </div>
         <Form
           form={form}
           name="basic"
-          labelCol={{ span: 2 }}
+          {...layout}
           style={{ width: '100%' }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -136,7 +143,7 @@ const DonorForm: FC<Types> = ({ handleGoBack }) => {
             isForm
           />
           <CustomInput placeholder="Enter price" label={'Price'} name={'price'} rules={[yupSync]} />
-          <CustomButton text={'Create'} isForm isBlock />
+          <CustomButton text={'Create'} isForm isBlock layout={tailLayout} />
         </Form>
       </Space>
     </>
