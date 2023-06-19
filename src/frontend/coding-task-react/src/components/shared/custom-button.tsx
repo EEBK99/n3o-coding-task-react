@@ -1,15 +1,27 @@
-import { Button } from 'antd';
+import { Button, Form } from 'antd';
 import { FC } from 'react';
 
 interface PropTypes {
   text: string;
+  isBlock?: boolean;
+  isFormButton?: boolean;
 }
 
-const CustomButton: FC<PropTypes> = ({ text }) => {
+const CustomButton: FC<PropTypes> = ({ text, isBlock, isFormButton }) => {
   return (
-    <Button type="primary" block style={{ background: '#000' }}>
-      {text}
-    </Button>
+    <>
+      {isFormButton ? (
+        <Form.Item>
+          <Button type="primary" block={isBlock} style={{ background: '#000' }} htmlType="submit">
+            {text}
+          </Button>
+        </Form.Item>
+      ) : (
+        <Button type="primary" block={isBlock} style={{ background: '#000' }}>
+          {text}
+        </Button>
+      )}
+    </>
   );
 };
 
