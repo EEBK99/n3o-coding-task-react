@@ -54,12 +54,14 @@ const DonorForm: FC<Types> = ({ handleGoBack }) => {
     axios
       .post('https://n3o-coding-task-react.azurewebsites.net/api/v1/donationItems', data)
       .then((res) => {
-        form.resetFields();
-        openNotificationWithIcon(
-          'success',
-          'Success',
-          'The new donation item created successfully'
-        );
+        if (res) {
+          form.resetFields();
+          openNotificationWithIcon(
+            'success',
+            'Success',
+            'The new donation item created successfully'
+          );
+        }
       })
       .catch((err) => {
         openNotificationWithIcon('error', 'Error', err?.message);

@@ -120,8 +120,10 @@ const DonorTable: FC<Types> = ({ handleGoBack }) => {
     axios
       .post('https://n3o-coding-task-react.azurewebsites.net/api/v1/donationItems/reset')
       .then((res) => {
-        openNotificationWithIcon('success', 'Success', 'Data reset successfully');
-        setTriggerTable(!triggerTable);
+        if (res) {
+          openNotificationWithIcon('success', 'Success', 'Data reset successfully');
+          setTriggerTable(!triggerTable);
+        }
       })
       .catch((err) => {
         openNotificationWithIcon('error', 'Error', err?.message);
